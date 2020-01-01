@@ -29,7 +29,7 @@ void send_status();
 void send_command_error();
 
 void setup() {
-    // gprs.checkPowerUp();
+    gprs.checkPowerUp();
     set_pin_modes();
     Serial.begin(9600);
 
@@ -67,38 +67,49 @@ void handle_message(const char* message) {
     // debug
     Serial.println(message);
     switch (message[0]) {
+        // handle on and off functionalities
         case 'E':
+            // check that E number is within 1 and 9
             if ((message[1] >= (int)'1') &&
                 (message[1] <= (int)'1')) {  // for testing with only 1
                 // if ((message[1] >= (int) '1') && (message[1] <= (int) '9')) {
-                n_estufa =
-                    message[1] - (int)'0' - 1;  // -1 to make it start with 0,
-                                                // i.e. estufa 1 -> array pos 0
-                if ((message[4] == 'F') &&
-                    (message[5] == 'F')) {  // if text was OFF
-                    digitalWrite(pin_map[n_estufa],
-                                 HIGH);  // relay driving circuitry is flipping
-                                         // the logic level, see schematic
+
+                // -1 to make it start with 0, i.e. estufa 1 -> array pos 0
+                n_estufa = message[1] - (int)'0' - 1; 
+
+                // if text was OFF
+                if ((message[4] == 'F') && (message[5] == 'F')) {
+                    
+                    // relay driving circuitry is flipping the logic level, see schematic
+                    digitalWrite(pin_map[n_estufa], HIGH);
                     estufa_status[n_estufa] = OFF;
                     send_status();
-                } else if (message[4] == 'N') {  // if text was ON
-                    digitalWrite(pin_map[n_estufa],
-                                 LOW);  // relay driving circuitry is flipping
-                                        // the logic level, see schematic
+
+                // if text was OFF
+                } else if (message[4] == 'N') {
+
+                    // relay driving circuitry is flipping the logic level, see schematic
+                    digitalWrite(pin_map[n_estufa], LOW);
                     estufa_status[n_estufa] = ON;
                     send_status();
+
+                // if text was not ON or OFF
                 } else {
                     send_command_error();
                 }
+
+            // if number was outide 1 - 9 range
             } else {
                 send_command_error();
             }
             break;
 
+        // handle sending status
         case 'S':
             send_status();
             break;
 
+        // other messages
         default:
             send_command_error();
             break;
