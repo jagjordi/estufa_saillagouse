@@ -72,13 +72,12 @@ void handle_message(const char* message) {
     #ifdef DEBUG
     Serial.println(message);
     #endif
-    switch (message[0]) 
+    switch (message[0]) {
         // handle on and off functionalities
         case 'E':
             // check that E number is within 1 and 9
-            // if ((message[1] >= (int) '1') && (message[1] <= (int) '9')) {
-            if ((message[1] >= (int)'1') &&
-                (message[1] <= (int)'1')) {  // for testing with only 1
+            // if ((message[1] >= (int) '1') && (message[1] <= (int) '3')) 
+            if ((message[1] >= (int)'1') && (message[1] <= (int)'1')) {  // for testing with only 1
 
                 // -1 to make it start with 0, i.e. estufa 1 -> array pos 0
                 n_estufa = message[1] - (int)'0' - 1; 
@@ -119,8 +118,8 @@ void handle_message(const char* message) {
         default:
             send_command_error();
             break;
-            }
     }
+}
 
 void send_status() {
     char data[255] = "Estat actual: \n  Estufa 1: ";
