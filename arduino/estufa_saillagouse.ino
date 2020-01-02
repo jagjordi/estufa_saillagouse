@@ -29,7 +29,7 @@ void send_status();
 void send_command_error();
 
 void setup() {
-    // gprs.checkPowerUp();
+    gprs.checkPowerUp();
     set_pin_modes();
     Serial.begin(9600);
     #ifdef DEBUG
@@ -72,54 +72,69 @@ void handle_message(const char* message) {
     #ifdef DEBUG
     Serial.println(message);
     #endif
-    switch (message[0]) {
+    switch (message[0]) 
+        // handle on and off functionalities
         case 'E':
+            // check that E number is within 1 and 9
             // if ((message[1] >= (int) '1') && (message[1] <= (int) '9')) {
-            if ((message[1] >= (int)'1') && (message[1] <= (int)'1')) {  // for testing with only 1
-                n_estufa =
-                    message[1] - (int)'0' - 1;  // -1 to make it start with 0,
-                // i.e. estufa 1 -> array pos 0
-                if ((message[4] == 'F') && (message[5] == 'F')) {  // if text was OFF
+            if ((message[1] >= (int)'1') &&
+                (message[1] <= (int)'1')) {  // for testing with only 1
+
+                // -1 to make it start with 0, i.e. estufa 1 -> array pos 0
+                n_estufa = message[1] - (int)'0' - 1; 
+
+                // if text was OFF
+                if ((message[4] == 'F') && (message[5] == 'F')) {
+                    
                     // relay driving circuitry is flipping the logic level, see schematic
                     digitalWrite(pin_map[n_estufa], HIGH);  
                     estufa_status[n_estufa] = OFF;
                     send_status();
-                } else if (message[4] == 'N') {  // if text was ON
+
+                // if text was OFF
+                } else if (message[4] == 'N') {
+
                     // relay driving circuitry is flipping the logic level, see schematic
                     digitalWrite(pin_map[n_estufa], LOW);
                     estufa_status[n_estufa] = ON;
                     send_status();
+
+                // if text was not ON or OFF
                 } else {
                     send_command_error();
                 }
+
+            // if number was outide 1 - 9 range
             } else {
                 send_command_error();
             }
             break;
 
-                case 'S':
+        // handle sending status
+        case 'S':
             send_status();
             break;
 
-                default:
+        // other messages
+        default:
             send_command_error();
             break;
             }
     }
 
-    void send_status() {
-        char data[255] = "Estat actual: \n  Estufa 1: ";
-        strcat(data, estufa_status[0] == ON ? "ON" : "OFF");
+void send_status() {
+    char data[255] = "Estat actual: \n  Estufa 1: ";
+    strcat(data, estufa_status[0] == ON ? "ON" : "OFF");
 
-        // keep trying until success with 1s delay in between attempts
-        while (!gprs.sendSMS(PHONE_NUMBER, data)) {
-            delay(1000);
-        }
+    // keep trying until success with 1s delay in between attempts
+    while (!gprs.sendSMS(PHONE_NUMBER, data)) {
+        delay(1000);
     }
+}
 
-    void send_command_error() {
-        // keep trying until success with 1s delay in between attempts
-        while (!gprs.sendSMS(PHONE_NUMBER, ERROR_MESSAGE)) {
-            delay(1000);
-        }
+void send_command_error() {
+    // keep trying until success with 1s delay in between attempts
+    while (!gprs.sendSMS(PHONE_NUMBER, ERROR_MESSAGE)) {
+        delay(1000);
     }
+}
