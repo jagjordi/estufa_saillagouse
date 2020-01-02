@@ -15,7 +15,7 @@ char message[MESSAGE_LENGTH], reply_message[MESSAGE_LENGTH];
 int messageIndex = 0, n_estufa = 0;
 
 int pin_map[9] = {3, 3, 3, 3, 3, 3, 3, 3, 3};
-enum on_off { OFF, ON };
+enum on_off {OFF, ON};
 enum on_off estufa_status[9] = {OFF, OFF, OFF, OFF, OFF, OFF, OFF, OFF, OFF};
 
 char phone[16];
@@ -32,16 +32,21 @@ void setup() {
     // gprs.checkPowerUp();
     set_pin_modes();
     Serial.begin(9600);
-
+    #ifdef DEBUG
     while (!Serial.available())
         ;
     Serial.println("Init");
+    #endif
     while (!gprs.init()) {
+        #ifdef DEBUG
         Serial.print("init error\r\n");
+        #endif
         delay(1000);
     }
     delay(3000);
+    #ifdef DEBUG
     Serial.println("Init Success, please send SMS message to me!");
+    #endif
 }
 
 void loop() {
@@ -64,27 +69,24 @@ void set_pin_modes() {
 }
 
 void handle_message(const char* message) {
-    // debug
+    #ifdef DEBUG
     Serial.println(message);
+    #endif
     switch (message[0]) {
         case 'E':
-            if ((message[1] >= (int)'1') &&
-                (message[1] <= (int)'1')) {  // for testing with only 1
-                // if ((message[1] >= (int) '1') && (message[1] <= (int) '9')) {
+            // if ((message[1] >= (int) '1') && (message[1] <= (int) '9')) {
+            if ((message[1] >= (int)'1') && (message[1] <= (int)'1')) {  // for testing with only 1
                 n_estufa =
                     message[1] - (int)'0' - 1;  // -1 to make it start with 0,
-                                                // i.e. estufa 1 -> array pos 0
-                if ((message[4] == 'F') &&
-                    (message[5] == 'F')) {  // if text was OFF
-                    digitalWrite(pin_map[n_estufa],
-                                 HIGH);  // relay driving circuitry is flipping
-                                         // the logic level, see schematic
+                // i.e. estufa 1 -> array pos 0
+                if ((message[4] == 'F') && (message[5] == 'F')) {  // if text was OFF
+                    // relay driving circuitry is flipping the logic level, see schematic
+                    digitalWrite(pin_map[n_estufa], HIGH);  
                     estufa_status[n_estufa] = OFF;
                     send_status();
                 } else if (message[4] == 'N') {  // if text was ON
-                    digitalWrite(pin_map[n_estufa],
-                                 LOW);  // relay driving circuitry is flipping
-                                        // the logic level, see schematic
+                    // relay driving circuitry is flipping the logic level, see schematic
+                    digitalWrite(pin_map[n_estufa], LOW);
                     estufa_status[n_estufa] = ON;
                     send_status();
                 } else {
@@ -95,29 +97,29 @@ void handle_message(const char* message) {
             }
             break;
 
-        case 'S':
+                case 'S':
             send_status();
             break;
 
-        default:
+                default:
             send_command_error();
             break;
+            }
     }
-}
 
-void send_status() {
-    char data[255] = "Estat actual: \n  Estufa 1: ";
-    strcat(data, estufa_status[0] == ON ? "ON" : "OFF");
+    void send_status() {
+        char data[255] = "Estat actual: \n  Estufa 1: ";
+        strcat(data, estufa_status[0] == ON ? "ON" : "OFF");
 
-    // keep trying until success with 1s delay in between attempts
-    while (!gprs.sendSMS(PHONE_NUMBER, data)) {
-        delay(1000);
+        // keep trying until success with 1s delay in between attempts
+        while (!gprs.sendSMS(PHONE_NUMBER, data)) {
+            delay(1000);
+        }
     }
-}
 
-void send_command_error() {
-    // keep trying until success with 1s delay in between attempts
-    while (!gprs.sendSMS(PHONE_NUMBER, ERROR_MESSAGE)) {
-        delay(1000);
+    void send_command_error() {
+        // keep trying until success with 1s delay in between attempts
+        while (!gprs.sendSMS(PHONE_NUMBER, ERROR_MESSAGE)) {
+            delay(1000);
+        }
     }
-}
