@@ -1,6 +1,8 @@
+// Arduino libraries
 #include <SoftwareSerial.h>
 #include <Wire.h>
 
+// Custom libraries
 #include "GPRS_Shield_Arduino.h"
 
 #define PIN_TX 7
@@ -14,7 +16,6 @@
 char message[MESSAGE_LENGTH], reply_message[MESSAGE_LENGTH];
 int messageIndex = 0, n_estufa = 0;
 
-int pin_map[9] = {3, 3, 3, 3, 3, 3, 3, 3, 3};
 enum on_off {OFF, ON};
 enum on_off estufa_status[9] = {OFF, OFF, OFF, OFF, OFF, OFF, OFF, OFF, OFF};
 
@@ -31,22 +32,22 @@ void send_command_error();
 void setup() {
     gprs.checkPowerUp();
     set_pin_modes();
+#ifdef DEBUG
     Serial.begin(9600);
-    #ifdef DEBUG
     while (!Serial.available())
         ;
     Serial.println("Init");
-    #endif
+#endif
     while (!gprs.init()) {
-        #ifdef DEBUG
+#ifdef DEBUG
         Serial.print("init error\r\n");
-        #endif
+#endif
         delay(1000);
     }
     delay(3000);
-    #ifdef DEBUG
+#ifdef DEBUG
     Serial.println("Init Success, please send SMS message to me!");
-    #endif
+#endif
 }
 
 void loop() {
@@ -69,41 +70,39 @@ void set_pin_modes() {
 }
 
 void handle_message(const char* message) {
-    #ifdef DEBUG
+#ifdef DEBUG
     Serial.println(message);
-    #endif
+#endif
     switch (message[0]) {
         // handle on and off functionalities
         case 'E':
             // check that E number is within 1 and 9
-            // if ((message[1] >= (int) '1') && (message[1] <= (int) '3')) 
+            // if ((message[1] >= (int) '1') && (message[1] <= (int) '3'))
             if ((message[1] >= (int)'1') && (message[1] <= (int)'1')) {  // for testing with only 1
 
                 // -1 to make it start with 0, i.e. estufa 1 -> array pos 0
-                n_estufa = message[1] - (int)'0' - 1; 
+                n_estufa = message[1] - (int)'0' - 1;
 
                 // if text was OFF
                 if ((message[4] == 'F') && (message[5] == 'F')) {
-                    
                     // relay driving circuitry is flipping the logic level, see schematic
-                    digitalWrite(pin_map[n_estufa], HIGH);  
+                    digitalWrite(pin_map[n_estufa], HIGH);
                     estufa_status[n_estufa] = OFF;
                     send_status();
 
-                // if text was OFF
+                    // if text was OFF
                 } else if (message[4] == 'N') {
-
                     // relay driving circuitry is flipping the logic level, see schematic
                     digitalWrite(pin_map[n_estufa], LOW);
                     estufa_status[n_estufa] = ON;
                     send_status();
 
-                // if text was not ON or OFF
+                    // if text was not ON or OFF
                 } else {
                     send_command_error();
                 }
 
-            // if number was outide 1 - 9 range
+                // if number was outide 1 - 9 range
             } else {
                 send_command_error();
             }
