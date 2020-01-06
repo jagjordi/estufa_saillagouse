@@ -4,7 +4,7 @@ EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 6
+Sheet 6 6
 Title "Estufes Saillagouse"
 Date "2019-12-30"
 Rev "1.0"
@@ -14,17 +14,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L MCU_Microchip_ATmega:ATmega328P-MU U?
-U 1 1 5E1709EC
-P 5800 2900
-F 0 "U?" H 5800 1311 50  0000 C CNN
-F 1 "ATmega328P-MU" H 5800 1220 50  0000 C CNN
-F 2 "Package_DFN_QFN:QFN-32-1EP_5x5mm_P0.5mm_EP3.1x3.1mm" H 5800 2900 50  0001 C CIN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 5800 2900 50  0001 C CNN
-	1    5800 2900
-	1    0    0    -1  
-$EndComp
 $Comp
 L KTHFS:ADP150AUJZ-3.3-R7 U?
 U 1 1 5E1718C8
@@ -47,85 +36,6 @@ F 3 " ~" H 5925 4900 50  0001 C CNN
 	1    7200 5450
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:Crystal Y?
-U 1 1 5E173FC3
-P 6850 2350
-F 0 "Y?" V 6804 2481 50  0000 L CNN
-F 1 "Crystal" V 6895 2481 50  0000 L CNN
-F 2 "" H 6850 2350 50  0001 C CNN
-F 3 "~" H 6850 2350 50  0001 C CNN
-	1    6850 2350
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	6400 2400 6600 2400
-Wire Wire Line
-	6600 2400 6600 2550
-Wire Wire Line
-	6600 2550 6850 2550
-Wire Wire Line
-	6850 2550 6850 2500
-Wire Wire Line
-	6850 2550 7300 2550
-Connection ~ 6850 2550
-Wire Wire Line
-	6850 2200 6850 2150
-Wire Wire Line
-	6850 2150 6600 2150
-Wire Wire Line
-	6600 2150 6600 2300
-Wire Wire Line
-	6600 2300 6400 2300
-Connection ~ 6850 2150
-$Comp
-L Device:C_Small C?
-U 1 1 5E1750D5
-P 7400 2150
-F 0 "C?" V 7171 2150 50  0000 C CNN
-F 1 "C_Small" V 7262 2150 50  0000 C CNN
-F 2 "" H 7400 2150 50  0001 C CNN
-F 3 "~" H 7400 2150 50  0001 C CNN
-	1    7400 2150
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	6850 2150 7300 2150
-$Comp
-L Device:C_Small C?
-U 1 1 5E177004
-P 7400 2550
-F 0 "C?" V 7171 2550 50  0000 C CNN
-F 1 "C_Small" V 7262 2550 50  0000 C CNN
-F 2 "" H 7400 2550 50  0001 C CNN
-F 3 "~" H 7400 2550 50  0001 C CNN
-	1    7400 2550
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	7500 2550 7700 2550
-Wire Wire Line
-	7700 2550 7700 2350
-Wire Wire Line
-	7700 2150 7500 2150
-$Comp
-L power:GND #PWR?
-U 1 1 5E17783C
-P 7850 2500
-F 0 "#PWR?" H 7850 2250 50  0001 C CNN
-F 1 "GND" H 7855 2327 50  0000 C CNN
-F 2 "" H 7850 2500 50  0001 C CNN
-F 3 "" H 7850 2500 50  0001 C CNN
-	1    7850 2500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7700 2350 7850 2350
-Wire Wire Line
-	7850 2350 7850 2500
-Connection ~ 7700 2350
-Wire Wire Line
-	7700 2350 7700 2150
 $Comp
 L power:GND #PWR?
 U 1 1 5E1798DF
@@ -247,4 +157,81 @@ Text Notes 5150 1650 2    50   ~ 0
 Aref shorted internaly to\nAVCC (through ADC config)
 NoConn ~ 5200 1900
 NoConn ~ 5200 2000
+$Comp
+L MCU_Microchip_ATmega:ATmega328P-AU U?
+U 1 1 5E12B37E
+P 5800 2900
+F 0 "U?" H 5800 2950 50  0000 C CNN
+F 1 "ATmega328P-AU" H 5800 3050 50  0000 C CNN
+F 2 "Package_QFP:TQFP-32_7x7mm_P0.8mm" H 5800 2900 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 5800 2900 50  0001 C CNN
+	1    5800 2900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E13081C
+P 7100 5850
+F 0 "#PWR?" H 7100 5600 50  0001 C CNN
+F 1 "GND" H 7105 5677 50  0000 C CNN
+F 2 "" H 7100 5850 50  0001 C CNN
+F 3 "" H 7100 5850 50  0001 C CNN
+	1    7100 5850
+	1    0    0    -1  
+$EndComp
+NoConn ~ 7100 4950
+Wire Wire Line
+	8150 5250 7600 5250
+Wire Wire Line
+	6950 2000 6400 2000
+Wire Wire Line
+	8150 5450 7600 5450
+Wire Wire Line
+	8150 5550 7600 5550
+Text Label 8150 5250 2    50   ~ 0
+MISO_ISP
+Text Label 6950 2000 2    50   ~ 0
+MOSI_ISP
+Text Label 8150 5450 2    50   ~ 0
+SCK_ISP
+Text Label 8150 5550 2    50   ~ 0
+~RST_ISP
+Wire Wire Line
+	6950 3200 6400 3200
+Text Label 6950 3200 2    50   ~ 0
+~RST_ISP
+Wire Wire Line
+	8150 5350 7600 5350
+Text Label 8150 5350 2    50   ~ 0
+MOSI_ISP
+Wire Wire Line
+	6950 2100 6400 2100
+Text Label 6950 2100 2    50   ~ 0
+MISO_ISP
+Wire Wire Line
+	6950 2200 6400 2200
+Text Label 6950 2200 2    50   ~ 0
+SCK_ISP
+Wire Notes Line
+	6550 2250 6550 1900
+Wire Notes Line
+	6550 1900 7300 1900
+Wire Notes Line
+	7300 1900 7300 2250
+Wire Notes Line
+	7300 2250 6550 2250
+Text Notes 7250 2000 2    50   ~ 0
+ISP
+Wire Wire Line
+	6400 3900 6950 3900
+Wire Wire Line
+	6400 4000 6950 4000
+Wire Wire Line
+	6400 4100 6950 4100
+Text HLabel 6950 3900 2    50   Output ~ 0
+relay1_enable
+Text HLabel 6950 4000 2    50   Output ~ 0
+relay2_enable
+Text HLabel 6950 4100 2    50   Output ~ 0
+relay3_enable
 $EndSCHEMATC

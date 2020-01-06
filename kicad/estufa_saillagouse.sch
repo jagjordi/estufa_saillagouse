@@ -40,5 +40,14 @@ S 5300 2750 1550 1400
 U 5E16FA13
 F0 "Microcontroller" 50
 F1 "uc.sch" 50
+F2 "relay1_enable" O R 6850 3300 50 
+F3 "relay2_enable" O R 6850 3400 50 
+F4 "relay3_enable" O R 6850 3500 50 
 $EndSheet
+Wire Wire Line
+	6850 3300 7700 3300
+Wire Wire Line
+	6850 3400 7700 3400
+Wire Wire Line
+	6850 3500 7700 3500
 $EndSCHEMATC

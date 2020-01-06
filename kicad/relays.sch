@@ -4,7 +4,7 @@ EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 6
+Sheet 5 6
 Title "Estufes Saillagouse"
 Date "2019-12-30"
 Rev "1.0"
@@ -554,4 +554,14 @@ Wire Wire Line
 NoConn ~ 5450 3500
 NoConn ~ 5450 1300
 NoConn ~ 5450 5700
+Wire Notes Line width 39
+	5350 7550 5350 850 
+Wire Notes Line width 39
+	3450 7550 3450 850 
+Text Notes 3700 750  0    118  ~ 0
+Double isolated
+Text Notes 2400 750  0    118  ~ 0
+LV side
+Text Notes 5650 750  0    118  ~ 0
+Mains side
 $EndSCHEMATC
